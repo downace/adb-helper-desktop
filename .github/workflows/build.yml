@@ -1,0 +1,83 @@
+name: Wails build
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+env:
+  # Necessary for most environments as build failure can occur due to OOM issues
+  NODE_OPTIONS: "--max-old-space-size=4096"
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        build:
+          - os: 'ubuntu-latest'
+            output-name: 'adb-helper-linux-${{ github.ref_name }}'
+            build-options: '--platform linux/amd64 -tags webkit2_41'
+          - os: 'windows-latest'
+            output-name: 'adb-helper-win-${{ github.ref_name }}.exe'
+            build-options: '--platform windows/amd64 -nsis'
+          - os: 'macos-latest'
+            output-name: 'adb-helper-macos-${{ github.ref_name }}.app'
+            build-options: '--platform darwin/universal'
+
+    runs-on: ${{ matrix.build.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Linux Dependencies
+        if: runner.os == 'Linux'
+        id: linux_discovery
+        run: |
+          sudo apt-get -yq update
+          sudo apt-get -yq install libgtk-3-0 libwebkit2gtk-4.1-dev gcc-aarch64-linux-gnu
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.0'
+      - name: Install Wails
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+        shell: bash
+
+      - name: Build App
+        run: wails build ${{ matrix.build.build-options }} -o ${{ matrix.build.output-name }}
+        shell: bash
+      - name: Add macOS perms
+        if: runner.os == 'macOS'
+        run: chmod +x build/bin/*/Contents/MacOS/*
+        shell: bash
+      - name: Add Linux perms
+        if: runner.os  == 'Linux'
+        run: chmod +x build/bin/*
+        shell: bash
+
+      - name: Build macOS .app zip file
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          ditto -c -k --keepParent "./build/bin/ADB Helper.app" ./build/bin/adb-helper-macos-${{ github.ref_name }}.zip
+      - name: Build macOS Installer
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          productbuild --component "./build/bin/ADB Helper.app" /Applications ./build/bin/adb-helper-macos-${{ github.ref_name }}.pkg
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Wails Build ${{ runner.os }}
+          path: |
+            */bin/
+            *\bin\*
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            */bin/*
