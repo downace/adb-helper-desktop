@@ -1,7 +1,7 @@
 package main
 
 import (
-	"adb-helper-desktop/internal/adb"
+	"github.com/downace/adb-helper-desktop/internal/adb"
 	"net/netip"
 )
 

@@ -1,13 +1,13 @@
 package main
 
 import (
-	"adb-helper-desktop/internal/adb"
-	"adb-helper-desktop/internal/common"
 	"context"
 	_ "embed"
 	"fmt"
 	"fyne.io/systray"
 	"github.com/betamos/zeroconf"
+	"github.com/downace/adb-helper-desktop/internal/adb"
+	"github.com/downace/adb-helper-desktop/internal/common"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"io"

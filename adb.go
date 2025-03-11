@@ -1,7 +1,7 @@
 package main
 
 import (
-	"adb-helper-desktop/internal/adb"
+	"github.com/downace/adb-helper-desktop/internal/adb"
 )
 
 func (a *App) ConnectDevice(host string) (string, error) {

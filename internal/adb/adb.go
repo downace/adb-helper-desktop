@@ -1,8 +1,8 @@
 package adb
 
 import (
-	"adb-helper-desktop/internal/common"
 	"fmt"
+	"github.com/downace/adb-helper-desktop/internal/common"
 	"os"
 	"os/exec"
 	"strings"

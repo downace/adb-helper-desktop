@@ -1,4 +1,4 @@
-module adb-helper-desktop
+module github.com/downace/adb-helper-desktop
 
 go 1.23.0
 
@@ -13,6 +13,8 @@ require (
 	golang.org/x/text v0.23.0
 	gopkg.in/yaml.v3 v3.0.1
 )
+
+retract [v0.0.0, v0.1.0] // Contains invalid module name
 
 require (
 	github.com/bep/debounce v1.2.1 // indirect
