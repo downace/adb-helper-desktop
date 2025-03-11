@@ -6,16 +6,18 @@ import (
 )
 
 type AppConfig struct {
-	loaded  bool
-	path    string
-	AdbPath string `yaml:"adbPath"`
+	loaded          bool
+	path            string
+	AdbPath         string `yaml:"adbPath"`
+	TerminalCommand string `yaml:"terminalCommand"`
 }
 
 func makeConfig(path string) *AppConfig {
 	return &AppConfig{
-		loaded:  false,
-		path:    path,
-		AdbPath: "adb",
+		loaded:          false,
+		path:            path,
+		TerminalCommand: "x-terminal-emulator -e", // Should work on Debian and Ubuntu
+		AdbPath:         "adb",
 	}
 }
 

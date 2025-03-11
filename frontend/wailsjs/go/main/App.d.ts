@@ -16,14 +16,20 @@ export function GetConnectedDevices():Promise<Array<adb.Device>>;
 
 export function GetServices():Promise<Array<zeroconf.Service>>;
 
+export function GetTerminalCommand():Promise<string>;
+
 export function Noop(arg1:netip.Addr):Promise<void>;
 
 export function PairDevice(arg1:string,arg2:string):Promise<string>;
 
-export function PickAdbPath():Promise<string>;
+export function PickFilePath():Promise<string>;
 
 export function RefreshKnownDevices():Promise<void>;
 
 export function RestartServicesSearch():Promise<void>;
 
 export function SetAdbPath(arg1:string):Promise<void>;
+
+export function SetTerminalCommand(arg1:string):Promise<void>;
+
+export function StartShell(arg1:string):Promise<void>;

@@ -12,6 +12,10 @@ func (a *App) DisconnectDevice(host string) (string, error) {
 	return a.adbClient.Disconnect(host)
 }
 
+func (a *App) StartShell(device string) error {
+	return a.adbClient.StartShell(a.config.TerminalCommand, device)
+}
+
 func (a *App) PairDevice(host string, codeOrPassword string) (string, error) {
 	return a.adbClient.Pair(host, codeOrPassword)
 }

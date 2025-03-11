@@ -111,6 +111,13 @@ func (c *Client) Disconnect(host string) (string, error) {
 	return c.exec("disconnect", host)
 }
 
+func (c *Client) StartShell(terminalCommand string, device string) error {
+	args := strings.Fields(terminalCommand)
+	binary := args[0]
+	args = append(args[1:], "adb -s "+device+" shell")
+	return exec.Command(binary, args...).Start()
+}
+
 func (c *Client) Pair(host string, codeOrPassword string) (string, error) {
 	output, err := c.exec("pair", host, codeOrPassword)
 	if err == nil && strings.Contains(output, "Failed") {

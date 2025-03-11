@@ -21,7 +21,7 @@ func main() {
 	err := wails.Run(&options.App{
 		Title:         "ADB Helper",
 		Width:         400,
-		Height:        600,
+		Height:        640,
 		DisableResize: true,
 		AssetServer: &assetserver.Options{
 			Assets: assets,

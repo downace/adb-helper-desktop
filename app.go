@@ -162,12 +162,16 @@ func (a *App) GetServices() []*zeroconf.Service {
 	return res
 }
 
-func (a *App) PickAdbPath() (string, error) {
+func (a *App) PickFilePath() (string, error) {
 	return runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{})
 }
 
 func (a *App) GetAdbPath() string {
 	return a.config.AdbPath
+}
+
+func (a *App) GetTerminalCommand() string {
+	return a.config.TerminalCommand
 }
 
 func (a *App) SetAdbPath(adbPath string) error {
@@ -181,6 +185,14 @@ func (a *App) SetAdbPath(adbPath string) error {
 		return err
 	}
 
+	return a.config.save()
+}
+
+func (a *App) SetTerminalCommand(command string) error {
+	if a.config.TerminalCommand == command {
+		return nil
+	}
+	a.config.TerminalCommand = command
 	return a.config.save()
 }
 

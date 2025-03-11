@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { AdbVersion, GetAdbPath, PickAdbPath, SetAdbPath } from "@/go/main/App";
+import {
+  AdbVersion,
+  GetAdbPath,
+  PickFilePath,
+  SetAdbPath,
+} from "@/go/main/App";
 import { BrowserOpenURL } from "@/runtime";
 import { useDebounce } from "@vueuse/core";
 import { onBeforeMount, shallowRef, watch } from "vue";
@@ -7,7 +12,7 @@ import { onBeforeMount, shallowRef, watch } from "vue";
 const adbPath = shallowRef("");
 
 async function pickAdbPath() {
-  const newPath = await PickAdbPath();
+  const newPath = await PickFilePath();
   if (!newPath) {
     // No file selected
     return;

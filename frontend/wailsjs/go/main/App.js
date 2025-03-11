@@ -26,6 +26,10 @@ export function GetServices() {
   return window['go']['main']['App']['GetServices']();
 }
 
+export function GetTerminalCommand() {
+  return window['go']['main']['App']['GetTerminalCommand']();
+}
+
 export function Noop(arg1) {
   return window['go']['main']['App']['Noop'](arg1);
 }
@@ -34,8 +38,8 @@ export function PairDevice(arg1, arg2) {
   return window['go']['main']['App']['PairDevice'](arg1, arg2);
 }
 
-export function PickAdbPath() {
-  return window['go']['main']['App']['PickAdbPath']();
+export function PickFilePath() {
+  return window['go']['main']['App']['PickFilePath']();
 }
 
 export function RefreshKnownDevices() {
@@ -48,4 +52,12 @@ export function RestartServicesSearch() {
 
 export function SetAdbPath(arg1) {
   return window['go']['main']['App']['SetAdbPath'](arg1);
+}
+
+export function SetTerminalCommand(arg1) {
+  return window['go']['main']['App']['SetTerminalCommand'](arg1);
+}
+
+export function StartShell(arg1) {
+  return window['go']['main']['App']['StartShell'](arg1);
 }
