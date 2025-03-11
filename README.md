@@ -13,9 +13,11 @@ Also check out my CLI tool with similar features: https://github.com/downace/adb
 
 Download from [Releases](https://github.com/downace/adb-helper-desktop/releases) page
 
-### Manual
+### Manual build
 
-TBD
+1. Install Wails CLI: https://wails.io/docs/gettingstarted/installation
+2. Clone or download this repository
+3. Run `wails build`
 
 ## Screenshots
 
