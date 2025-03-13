@@ -5,12 +5,13 @@ import {
   GetServices,
   PairDevice,
   RestartServicesSearch,
+  WindowIsHidden,
 } from "@/go/main/App";
 import type { adb } from "@/go/models";
 import type { zeroconf } from "@/go/models";
 import { serviceAddrs, serviceId } from "@/helpers/mdns";
 import { EventsOn } from "@/runtime";
-import { useIdle } from "@vueuse/core";
+import { useIdle, useIntervalFn } from "@vueuse/core";
 import { defineStore } from "pinia";
 import {
   onBeforeMount,
@@ -41,6 +42,10 @@ export const useAppStore = defineStore("app", () => {
       EventsOn("adb-device", () => {
         void refreshConnectedDevices();
       }),
+
+      EventsOn("window-hidden", (hidden) => {
+        windowHidden.value = hidden;
+      }),
     ];
   });
 
@@ -53,6 +58,12 @@ export const useAppStore = defineStore("app", () => {
   onBeforeMount(() => {
     void loadServices();
     void refreshConnectedDevices();
+  });
+
+  const windowHidden = shallowRef(false);
+
+  onBeforeMount(async () => {
+    windowHidden.value = await WindowIsHidden();
   });
 
   function pairDevice(host: string, codeOrPassword: string) {
@@ -83,6 +94,10 @@ export const useAppStore = defineStore("app", () => {
     }
   }
 
+  async function refreshAll() {
+    return Promise.all([refreshServices(), refreshConnectedDevices()]);
+  }
+
   async function refreshServices() {
     await RestartServicesSearch();
   }
@@ -99,9 +114,18 @@ export const useAppStore = defineStore("app", () => {
 
   watch(idle, (isIdle, wasIdle) => {
     if (wasIdle || !isIdle) {
-      void refreshServices();
+      void refreshAll();
     }
   });
+
+  useIntervalFn(
+    () => {
+      if (!windowHidden.value) {
+        void refreshAll();
+      }
+    },
+    () => 60_000,
+  );
 
   return {
     services: shallowReadonly(services),

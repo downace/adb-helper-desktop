@@ -33,3 +33,5 @@ export function SetAdbPath(arg1:string):Promise<void>;
 export function SetTerminalCommand(arg1:string):Promise<void>;
 
 export function StartShell(arg1:string):Promise<void>;
+
+export function WindowIsHidden():Promise<boolean>;
