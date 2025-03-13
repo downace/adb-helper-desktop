@@ -61,3 +61,7 @@ export function SetTerminalCommand(arg1) {
 export function StartShell(arg1) {
   return window['go']['main']['App']['StartShell'](arg1);
 }
+
+export function WindowIsHidden() {
+  return window['go']['main']['App']['WindowIsHidden']();
+}

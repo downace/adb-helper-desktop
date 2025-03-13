@@ -66,7 +66,7 @@ func (a *App) initTray() func() {
 				} else {
 					runtime.WindowHide(a.ctx)
 				}
-				a.hidden = !a.hidden
+				a.setWindowHidden(!a.hidden)
 			}
 		}()
 
@@ -135,7 +135,7 @@ func (a *App) beforeClose(ctx context.Context) (prevent bool) {
 		return false
 	}
 	runtime.WindowHide(ctx)
-	a.hidden = true
+	a.setWindowHidden(true)
 	return true
 }
 
@@ -148,6 +148,15 @@ func (a *App) shutdown(_ context.Context) {
 func (a *App) secondInstanceLaunch(_ options.SecondInstanceData) {
 	runtime.WindowShow(a.ctx)
 	runtime.WindowUnminimise(a.ctx)
+}
+
+func (a *App) setWindowHidden(hidden bool) {
+	a.hidden = hidden
+	runtime.EventsEmit(a.ctx, "window-hidden", hidden)
+}
+
+func (a *App) WindowIsHidden() bool {
+	return a.hidden
 }
 
 func (a *App) RestartServicesSearch() {
